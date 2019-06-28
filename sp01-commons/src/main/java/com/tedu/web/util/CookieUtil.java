@@ -9,7 +9,11 @@ public class CookieUtil {
 	 * @param response
 	 * @param name
 	 * @param value
+<<<<<<< HEAD
 	 * @param maxAge   R   K
+=======
+	 * @param maxAge   R   R
+>>>>>>> branch 'master' of https://github.com/insno/repository.git
 	 */
 	public static void setCookie(HttpServletResponse response,
 			String name, String value, String domain, String path, int maxAge) {
