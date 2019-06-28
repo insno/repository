@@ -12,7 +12,7 @@ public class CookieUtil {
 <<<<<<< HEAD
 	 * @param maxAge   R   K
 =======
-	 * @param maxAge   D   A
+	 * @param maxAge   R   R
 >>>>>>> branch 'master' of https://github.com/insno/repository.git
 	 */
 	public static void setCookie(HttpServletResponse response,
