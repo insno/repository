@@ -1,10 +1,14 @@
 spring:
   application:
     name: item-service
-    
-#server:
-  #port: 8001
-  
+  rabbitmq:
+    host: 192.168.92.133
+    port: 5672
+    username: admin
+    password: admin  
+server:
+  port: 8001
+
 eureka:
   client:
     service-url:
@@ -21,4 +25,4 @@ spring:
   profiles: item2
 
 server:
-  port: 8002
+  port: 8002      
