@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace一般指定为当前文件的所在包路径+文件名（将来是接口名） 在程序中通过[ namespace + id ]定位到执行哪一条SQL语句 -->
+<mapper namespace="com.tedu.dao.EmpMapper">
+	<!--1查询所有员工信息 返回list<Emp> 查询语句要么么返回一条记录 要么返回多条记录 如果返回一条记录最终要封装一个java对象 如果返回多条记录要封装成多个java对象 
+		再将多个对象封装成一个集合中（list） resultType：指定结果的类型 表明将查询的结果封装到emp对象中 -->
+	<select id="findAll" resultType="com.tedu.pojo.Emp">
+		select * from emp
+	</select>
+	<!-- 新增一个新员工 马云 ceo 7000 -->
+	<update id="insert"><!-- //增删改默认是int不用返回类型 -->
+		insert into emp values(null,'ma','CEO',7000)
+	</update>
+	<!-- 修改员工信息 -->
+	<update id="update">
+		update emp set job='CTO',salary=3500
+		where name='王海涛'
+	</update>
+	<!-- 删除员工信息 -->
+	<update id="delete">
+		delete from emp
+		where name='王海涛'
+	</update>
+
+	<!--根据id查询员工信息 -->
+	<select id="findById" resultType="com.tedu.pojo.Emp">
+		select * from emp
+		where id=#{id}
+	</select>
+
+
+	<!-- 6#占位符 新增员工 -->
+	<update id="insert2">
+		insert into emp
+		values(null,#{name},#{job},#{salary});
+	</update>
+	<!--7修改信息 -->
+	<update id="update2">
+		update emp set job=#{job},salary=#{salary} where
+		name=#{name}
+	</update>
+	<!--8删除员工 -->
+	<delete id="delete2">
+		delete from emp where name=#{name}
+	</delete>
+
+	<!--9查询薪资在25000到35000之间的员工 -->
+	<select id="FindAll2" resultType="com.tedu.pojo.Emp">
+		select * from emp where salary
+		between #{minSal} and #{maxSal}
+	</select>
+
+	<!--10查询所有员工信息${占位符} -->
+	<select id="findAll3" resultType="com.tedu.pojo.Emp">
+		select ${cols} from emp
+	</select>
+	<!--11根据name模糊查询 -->
+	<select id="findAll4" resultType="com.tedu.pojo.Emp">
+		select * from emp where name
+		like '%${name}%'
+	</select>
+	<!--12查询员工信息 如果传递了name参数就根据name参数模糊查询 如果没有传参数就查询所有员工 -->
+	<select id="findAll5" resultType="com.tedu.pojo.Emp">
+		select * from emp
+		<if test="name != null">
+			where name like '%${name}%'
+		</if>
+	</select>
+	<!--13接收minsal和maxsal两个参数 如果两个参数都为null则查询所有员工 如果两个参数都不为null则查询指定区间的员工 如果minsal 
+		！= null 则查询薪资大于minsal的员工 如果maxsal ！= null则查询薪资小于maxsal的员工 -->
+	<select id="findAll6" resultType="com.tedu.pojo.Emp">
+		select * from emp
+		<where>
+			<if test="minSal != null">
+				salary > #{minSal}
+			</if>
+			<if test="maxSal != null">
+				and salary <![CDATA[ < ]]>
+				#{maxSal}
+			</if>
+		</where>
+	</select>
+	<!--14修改员工信息 如果传递了name或job或salary 则修改这些列 否则就不修改 -->
+	<update id="update3">
+		update emp
+		<set>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="job != null">
+				job =#{job},
+			</if>
+			<if test="salary != null">
+				salary =#{salary}
+			</if>
+		</set>
+	</update>
+	<!--15批量删除 collection="array"便是遍历的是一个数组 -->
+	<update id="deleteByIds">
+		delete from emp where id in
+		<foreach collection="array" item="ids" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</update>
+	<!--16根据ID修改员工信息 -->
+	<update id="updateById">
+		update emp set name=#{name},job=#{job},salary=#{salary}
+		where id=#{id}
+	</update>
+</mapper>
